@@ -55,7 +55,13 @@ app.post('/put-location', (req, res) => {
   lastKnownLocationObject = locationEntries[locationEntries.length - 1]
 
   // This response is necessary to flush the app's cache of locations from the batch it just sent
-  res.send({result: "ok"})
+  res.send({ result: "ok" })
+})
+
+//for our front end to call it will get an array of double with two entries in the array for coordiinates
+app.get('/getLocation', (req, res) => {
+  
+  res.send(lastKnownLocationObject.coordinates)
 })
 
 app.listen(port, () => {
