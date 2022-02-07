@@ -14,6 +14,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
       <span >{todo.location_text}</span>
       <span >{todo.date_text}</span>
+      <span >{todo.time_text}</span>
       <div>
         <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
         <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
@@ -26,6 +27,7 @@ function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
   const [date_value, setDate] = React.useState("");
+  const [time_value, setTime] = React.useState("");
   console.log("forming of todo:");
   console.log(location_value);
   console.log(value);
@@ -35,12 +37,17 @@ function FormTodo({ addTodo }) {
     console.log(location_value);
     console.log(value);
     e.preventDefault();
+
+    var today = new Date().toISOString().slice(0, 10);
     
-    if (!value) return;
-    addTodo(value, location_value?location_value:"",  date_value?date_value:"");
+    if(date_value !== "" && date_value <  today){
+      return;
+    } 
+    addTodo(value, location_value?location_value:"",  date_value?date_value:"", time_value?time_value:"");
     setValue("");
     setLocation("");
     setDate("");
+    setTime("");
   };
 //see what form of location will make the most sense to add to the search bar
   return (
@@ -49,11 +56,13 @@ function FormTodo({ addTodo }) {
       <Form.Label><b>Add Todo</b></Form.Label>
       <p></p>
       <b>ToDo:</b>
-      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo hehe" />
+      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo task" required/>
       <b>Where: </b>
       <Form.Control type="text" className="input" value={location_value} onChange={e => setLocation(e.target.value)} placeholder="Add best location" /> 
       <b>Date: </b>
-      <Form.Control type="text" className="input" value={date_value} onChange={e => setDate(e.target.value)} placeholder="Add Date" /> 
+      <Form.Control type="date" className="input" value={date_value} onChange={e => setDate(e.target.value)} placeholder="Add Date"/> 
+      <b>Time: </b>
+      <Form.Control type="time" className="input" value={time_value} onChange={e => setTime(e.target.value)} placeholder="Add Time"/> 
       
     </Form.Group>
     <Button variant="primary mb-3" type="submit">
@@ -69,12 +78,13 @@ function App() {
       text: "Pick up dog",
       location_text:"Goomer",
       date_text:"1-1-11",
+      time_text:"1:00",
       isDone: false
     }
   ]);
 
-  const addTodo = (text,location_text, date_text) => {
-    const newTodos = [...todos, { text, location_text, date_text}];
+  const addTodo = (text,location_text, date_text, time_text) => {
+    const newTodos = [...todos, { text, location_text, date_text, time_text}];
     console.log("here: ");
     console.log(newTodos);
 
@@ -102,7 +112,7 @@ function App() {
         <FormTodo addTodo={addTodo} />
         <div>
 
-          <p> &emsp;Task  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Where &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Date</p>
+          <p> &emsp;Task  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Where &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Date &emsp;&emsp;&emsp; Time</p>
           {todos.map((todo, index) => (
             <Card>
               <Card.Body>
