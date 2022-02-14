@@ -19,6 +19,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
       <span >{todo.location_text}</span>
       <span >{todo.date_text}</span>
+      <span >{todo.time_text}</span>
       <div>
         <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
         <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
@@ -32,7 +33,6 @@ function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
   const [location_value_in, setLocation_in] = React.useState("");
-
   const [date_value, setDate] = React.useState("");
   // console.log("forming of todo:");
   // console.log(location_value);
@@ -40,7 +40,7 @@ function FormTodo({ addTodo }) {
   // console.log("compair: " + locationrn + " and: " + location_value);
   if (locationrn != location_value_in){
     callingwebsite(location_value_in);
-    console.log("hateeee  :   " +currlocaation);
+    console.log(currlocaation);
     //console.log( "hate: " +callingwebsite(location_value_in));
     locationrn = location_value_in;
     console.log(location_value_in);
@@ -49,7 +49,6 @@ function FormTodo({ addTodo }) {
   //var red = "red!!";
 
   const myArray = currlocaation;
-  
   const options = myArray.map((item) => {
 
     return (
@@ -60,69 +59,32 @@ function FormTodo({ addTodo }) {
       </option>
     )
   })
+
+  const [time_value, setTime] = React.useState("");
   
 
   const handleSubmit = e => {
-    // console.log("forming of todo: crate");
-    // console.log(location_value);
-    
-    // console.log(value);
-    console.log("location" + location_value_in );
+    console.log("forming of todo: crate");
+    console.log(location_value);
+    console.log(value);
     e.preventDefault();
-    if (!value) return;
+
+    var today = new Date().toISOString().slice(0, 10);
     
-    addTodo(value, location_value?location_value:"",  date_value?date_value:"");
+
+    ///this makes it so that it will only let you submit when a date is choseen if it is in the futuer
+    if(date_value !== "" && date_value <  today){
+      return;
+    } 
+
+
+    addTodo(value, location_value?location_value:"",  date_value?date_value:"", time_value?time_value:"");
     setValue("");
     setLocation("");
     setLocation_in("");
     setDate("");
-    
-    
+    setTime("");
   };
-  // <select class="form-control" id="exampleFormControlSelect1" multiple>
-  //     <option>1 best</option>
-      // <option>2no</option>
-      // <option>3</option>
-      // <option>4</option>
-      // <option>5</option>
-  //   </select>
-//see what form of location will make the most sense to add to the search bar
-
-// <Form.Control fullWidth variant="outlined">
-//             <Input.Label htmlFor="campaign_budget_label">Campaign Budget</Input.Label>
-//             <Controller
-//               name="campaignSpend"
-//               control={methods.control}
-//               rules={{ required: 'Budget Required' }}
-//               render={({ field: { onChange, value} }) => (
-//                 <Select 
-//                   value={value}
-//                   onChange={onChange}
-//                   label="Campaign Budget" 
-//                   labelId="campaign_budget_label"
-//                   >
-//                   <MenuItem value="250">$250</MenuItem>
-//                   <MenuItem value="500">$500</MenuItem>
-//                   <MenuItem value="$1000">$1000</MenuItem>
-//                 </Select>
-//               )} 
-//               defaultValue="" // make sure to set up defaultValue
-//             />
-
-/* <Form.Control
-          type="select"
-          custom
-          onChange={e=>setLocation(this.onChangeColor.bind(this))}
-        >
-          <option value="red" key = "r">Red</option>
-          <option value="blue"key = "b">Blue</option>
-          <option value="green"key = "g">Green</option>
-          <option value="black"key = "bl">Black</option>
-          <option value="orange" key = "o">Orange</option>
-        </Form.Control> */
-
-
-//<Form.Control type="text" className="input" value={location_value} onChange={e => setLocation(e.target.value)} placeholder="Add best location" /> 
   return (
    
     <Form onSubmit={handleSubmit}> 
@@ -130,7 +92,7 @@ function FormTodo({ addTodo }) {
       <Form.Label><b>Add Todo</b></Form.Label>
       <p></p>
       <b>ToDo:</b>
-      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo hehe" />
+      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo task" required/>
       <b>Where: </b>
       <Form.Control type="text" className="input" value={location_value_in} onChange={e => setLocation_in(e.target.value)} placeholder="Look up where" /> 
       <Form.Control
@@ -142,7 +104,9 @@ function FormTodo({ addTodo }) {
         </Form.Control>
       
       <b>Date: </b>
-      <Form.Control type="text" className="input" value={date_value} onChange={e => setDate(e.target.value)} placeholder="Add Date" /> 
+      <Form.Control type="date" className="input" value={date_value} onChange={e => setDate(e.target.value)} placeholder="Add Date"/> 
+      <b>Time: </b>
+      <Form.Control type="time" className="input" value={time_value} onChange={e => setTime(e.target.value)} placeholder="Add Time"/> 
       
     </Form.Group>
     <Button variant="primary mb-3" type="submit">
@@ -159,12 +123,15 @@ function App() {
       text: "Pick up dog",
       location_text:"Goomer",
       date_text:"1-1-11",
+      time_text:"1:00",
       isDone: false
     }
   ]);
-  //initMap();
-  const addTodo = (text,location_text, date_text) => {
-    const newTodos = [...todos, { text, location_text, date_text}];
+
+
+  const addTodo = (text,location_text, date_text, time_text) => {
+    const newTodos = [...todos, { text, location_text, date_text, time_text}];
+
     console.log("here: ");
     console.log(newTodos);
     
@@ -195,7 +162,7 @@ function App() {
         <FormTodo addTodo={addTodo} />
         <div>
 
-          <p> &emsp;Task  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Where &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Date</p>
+          <p> &emsp;Task  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Where &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Date &emsp;&emsp;&emsp; Time</p>
           {todos.map((todo, index) => (
             <Card>
               <Card.Body>
