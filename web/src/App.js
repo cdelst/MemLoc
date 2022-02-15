@@ -46,6 +46,12 @@ function GetDistanceBetweenCoordinates({ todoLocation, setDistance }) {
 
 }
 
+function Popup({todoLocation}) {
+  if(currlocaation[0] == todoLocation[0]  && currlocaation[1] == todoLocation[1]) {
+	  alert(“Current location is same as location in to do list”);
+  }  
+}
+
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
