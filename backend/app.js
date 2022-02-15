@@ -28,9 +28,9 @@ app.post('/put-location', (req, res) => {
 
   // {
   //   type: 'Feature',
-  //       geometry: {
-  //   type: 'Point',
-  //       coordinates: [ -122.05361586868501, 36.97086197075715 ]
+  //   geometry: {
+  //        type: 'Point',
+  //        coordinates: [ -122.05361586868501, 36.97086197075715 ]
   // },
   //   properties: {
   //     speed: 1,
@@ -59,11 +59,23 @@ app.post('/put-location', (req, res) => {
 })
 
 //for our front end to call it will get an array of double with two entries in the array for coordiinates
-app.get('/getLocation', (req, res) => {
-  
-  res.send(lastKnownLocationObject.coordinates)
+app.get('/get-location', (req, res) => {
+  if (!lastKnownLocationObject) {
+    res.status(404)
+    res.send({status: 'not found'})
+    return
+  }
+
+  res.send(lastKnownLocationObject.geometry.coordinates)
 })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+const setCoordinates = (coords) => {
+  lastKnownLocationObject = coords
+}
+
+module.exports = app
+module.exports.setCoordinates = setCoordinates
