@@ -8,10 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 var locationrn = ".";
 var currlocaation = [];
 function Todo({ todo, index, markTodo, removeTodo }) {
-  console.log("train");
+  // console.log("train");
 
 
-  console.log(todo);
+  // console.log(todo);
   return (
     <div
       className="todo"
@@ -48,7 +48,7 @@ function GetDistanceBetweenCoordinates({ todoLocation, setDistance }) {
 
 function Popup({todoLocation}) {
   if(currlocaation[0] == todoLocation[0]  && currlocaation[1] == todoLocation[1]) {
-	  alert(“Current location is same as location in to do list”);
+	  alert("Current location is same as location in to do list");
   }  
 }
 
@@ -92,15 +92,6 @@ function FormTodo({ addTodo }) {
     console.log(value);
     e.preventDefault();
 
-    var today = new Date().toISOString().slice(0, 10);
-
-
-    ///this makes it so that it will only let you submit when a date is choseen if it is in the futuer
-    if (date_value !== "" && date_value < today) {
-      return;
-    }
-
-
     addTodo(value, location_value ? location_value : "", date_value ? date_value : "", time_value ? time_value : "");
     setValue("");
     setLocation("");
@@ -140,6 +131,7 @@ function FormTodo({ addTodo }) {
   );
 }
 
+
 function App() {
   const [todos, setTodos] = React.useState([
     {
@@ -174,6 +166,27 @@ function App() {
     newTodos.splice(index, 1);
     setTodos(newTodos);
   };
+
+  const checkDateandTime = () => {
+    var now = new Date();
+    // formatting date to be same format as input date
+    var today = now.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replace('.', '');
+    var curr_time = now.toLocaleTimeString('en',
+    { timeStyle: 'short', hour12: false });
+    for(let i = 0; i < todos.length; i ++){
+      if (todos[i].date_text !== "") {
+        console.log(todos[i].date_text);
+        if(todos[i].date_text == today && todos[i].time_text == "" && curr_time == "9:00"){ // default notif at 9 AM if time not specified
+          alert(todos[i].text + " is due today!");
+        } else if(todos[i].date_text == today && todos[i].time_text == curr_time){
+          alert("time to do: " + todos[i].text);
+        }
+      }
+    }
+
+  }
+  setInterval(checkDateandTime, 60 *  1000); // checkDateandTime is called every minute
+  
   //the spacing is temporary I want to figuer it out difinitavly after all of the sections are filled
   return (
 
@@ -251,4 +264,5 @@ async function callingwebsite(addressSoFar) {
   //  return (captuer);
   //console.log("will this work" + response.json());
 }
+
 export default App;
