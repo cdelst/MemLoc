@@ -28,24 +28,28 @@ function Todo({ todo, index, markTodo, removeTodo }) {
   );
 }
 
-function GetDistanceBetweenCoordinates({ todoLocation }) {
+function GetDistanceBetweenCoordinates(todoLocation) {
+
+  //currlocaation = [37.040998861397526, -122.07123581353396];
+
   const lat1 = (currlocaation[0] * Math.PI) / 180.0;
   const lat2 = (todoLocation[0] * Math.PI) / 180.0;
   const long1 = (currlocaation[1] * Math.PI) / 180.0;
   const long2 = (todoLocation[1] * Math.PI) / 180.0;
 
 
-  const distanceInMiles = 3963 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1))
+  const distanceInMiles = 3963 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1));
 
 
-  return distanceInMiles
+  console.log("The distance in miles" + distanceInMiles);
+  return distanceInMiles;
 
 }
 
-function Popup({todoLocation}) {
-  if(currlocaation[0] == todoLocation[0]  && currlocaation[1] == todoLocation[1]) {
-	  alert("Current location is same as location in to do list");
-  }  
+function Popup({ todoLocation }) {
+  if (currlocaation[0] == todoLocation[0] && currlocaation[1] == todoLocation[1]) {
+    alert("Current location is same as location in to do list");
+  }
 }
 
 function FormTodo({ addTodo }) {
@@ -168,21 +172,21 @@ function App() {
     // formatting date to be same format as input date
     var today = now.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replaceAll('. ', '-').replace('.', '');
     var curr_time = now.toLocaleTimeString('en',
-    { timeStyle: 'short', hour12: false });
-    for(let i = 0; i < todos.length; i ++){
+      { timeStyle: 'short', hour12: false });
+    for (let i = 0; i < todos.length; i++) {
       if (todos[i].date_text !== "") {
         console.log(todos[i].date_text);
-        if(todos[i].date_text == today && todos[i].time_text == "" && curr_time == "9:00"){ // default notif at 9 AM if time not specified
+        if (todos[i].date_text == today && todos[i].time_text == "" && curr_time == "9:00") { // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
-        } else if(todos[i].date_text == today && todos[i].time_text == curr_time){
+        } else if (todos[i].date_text == today && todos[i].time_text == curr_time) {
           alert("time to do: " + todos[i].text);
         }
       }
     }
 
   }
-  setInterval(checkDateandTime, 60 *  1000); // checkDateandTime is called every minute
-  
+  setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
+
   //the spacing is temporary I want to figuer it out difinitavly after all of the sections are filled
   return (
 
@@ -217,7 +221,13 @@ function App() {
   );
 }
 async function callingwebsite(addressSoFar) {
-  var distance = GetDistanceBetweenCoordinates([32.4444])
+  /*Testing GetDistanceBetweenCoordinates function
+  
+  var todoLocation = [34.122628525138126, -117.68139788871015];
+  var distance = GetDistanceBetweenCoordinates(todoLocation);
+  console.log("The distance " + distance);
+  console.log("the todo location: " + todoLocation);
+  */
 
   if (addressSoFar != undefined) {
     console.log("original: " + addressSoFar);
