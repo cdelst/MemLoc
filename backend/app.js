@@ -3,7 +3,31 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-var lastKnownLocationObject
+var lastKnownLocationObject = {
+    type: 'Feature',
+    geometry: {
+         type: 'Point',
+         coordinates: [ -122.05361586868501, 36.97086197075715 ]
+  },
+    properties: {
+      speed: 1,
+          battery_state: 'unplugged',
+          motion: [ 'walking' ],
+          timestamp: '2021-11-13T06:01:09Z',
+          battery_level: 1,
+          vertical_accuracy: 3,
+          pauses: false,
+          horizontal_accuracy: 5,
+          wifi: '',
+          deferred: 100,
+          significant_change: 1,
+          locations_in_payload: 1,
+          activity: 'other',
+          device_id: 'CDXS',
+          altitude: 75,
+          desired_accuracy: -1
+    }
+  }
 
 app.use(express.json())
 
@@ -66,6 +90,7 @@ app.get('/get-location', (req, res) => {
     return
   }
 
+  res.status(200)
   res.send(lastKnownLocationObject.geometry.coordinates)
 })
 

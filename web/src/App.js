@@ -1,20 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./App.css";
 import { Button, Card, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import require from "node.js";
-//import initMap from "./initMap.js";
 
-var locationrn = ".";
-var currlocaation = [];
+var locationrn = [];
+var currLocation = [];
 function Todo({ todo, index, markTodo, removeTodo }) {
-  // console.log("train");
 
+  var displayLocationDue = true
+  if (todo.coordinates) {
+    const distanceFromCurrLocation = GetDistanceBetweenCoordinates(todo.coordinates)
 
-  // console.log(todo);
+    if (distanceFromCurrLocation < 1000) {
+      displayLocationDue = true
+    }
+  }
   return (
     <div
       className="todo"
+      style={{backgroundColor: displayLocationDue ? "gold": ""}}
     >
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
       <span >{todo.location_text}</span>
@@ -32,14 +36,12 @@ function GetDistanceBetweenCoordinates(todoLocation) {
 
   //currlocaation = [37.040998861397526, -122.07123581353396];
 
-  const lat1 = (currlocaation[0] * Math.PI) / 180.0;
+  const lat1 = (currLocation[0] * Math.PI) / 180.0;
   const lat2 = (todoLocation[0] * Math.PI) / 180.0;
-  const long1 = (currlocaation[1] * Math.PI) / 180.0;
+  const long1 = (currLocation[1] * Math.PI) / 180.0;
   const long2 = (todoLocation[1] * Math.PI) / 180.0;
 
-
   const distanceInMiles = 3963 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1));
-
 
   console.log("The distance in miles" + distanceInMiles);
   return distanceInMiles;
@@ -47,7 +49,7 @@ function GetDistanceBetweenCoordinates(todoLocation) {
 }
 
 function Popup({ todoLocation }) {
-  if (currlocaation[0] == todoLocation[0] && currlocaation[1] == todoLocation[1]) {
+  if (currLocation[0] == todoLocation[0] && currLocation[1] == todoLocation[1]) {
     alert("Current location is same as location in to do list");
   }
 }
@@ -57,39 +59,25 @@ function FormTodo({ addTodo }) {
   const [location_value, setLocation] = React.useState("");
   const [location_value_in, setLocation_in] = React.useState("");
   const [date_value, setDate] = React.useState("");
-  // console.log("forming of todo:");
-  // console.log(location_value);
-  // console.log(value);
-  // console.log("compair: " + locationrn + " and: " + location_value);
+
   if (locationrn != location_value_in) {
     callingwebsite(location_value_in);
-    console.log(currlocaation);
-    //console.log( "hate: " +callingwebsite(location_value_in));
     locationrn = location_value_in;
-    console.log(location_value_in);
   }
-  const arrayNew = [];
-  //var red = "red!!";
 
-  const myArray = currlocaation;
+  const myArray = currLocation;
   const options = myArray.map((item) => {
 
     return (
       <option key={item} value={item}>
-
         {item}
-
       </option>
     )
   })
 
   const [time_value, setTime] = React.useState("");
 
-
   const handleSubmit = e => {
-    console.log("forming of todo: crate");
-    console.log(location_value);
-    console.log(value);
     e.preventDefault();
 
     addTodo(value, location_value ? location_value : "", date_value ? date_value : "", time_value ? time_value : "");
@@ -143,17 +131,21 @@ function App() {
     }
   ]);
 
+  const [backendLocation, setBackendLocation] = React.useState(undefined)
+
+  useEffect(() => {
+    fetch('/get-location')
+        .then((res) => res.json())
+        .then((json) => {
+          setBackendLocation(json)
+        })
+    console.log('backend location: ' + backendLocation)
+  }, [])
 
   const addTodo = (text, location_text, date_text, time_text) => {
     const newTodos = [...todos, { text, location_text, date_text, time_text }];
-
-    console.log("here: ");
-    console.log(newTodos);
-
-    //newTodos.location = "grow";
     setTodos(newTodos);
   };
-
 
   const markTodo = index => {
     const newTodos = [...todos];
@@ -175,7 +167,6 @@ function App() {
       { timeStyle: 'short', hour12: false });
     for (let i = 0; i < todos.length; i++) {
       if (todos[i].date_text !== "") {
-        console.log(todos[i].date_text);
         if (todos[i].date_text == today && todos[i].time_text == "" && curr_time == "9:00") { // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
         } else if (todos[i].date_text == today && todos[i].time_text == curr_time) {
@@ -187,27 +178,22 @@ function App() {
   }
   setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
 
+
+
   //the spacing is temporary I want to figuer it out difinitavly after all of the sections are filled
   return (
-
-
-
     <div className="app">
       <div className="container">
         <h1 className="text-center mb-4">Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
-
           <p> &emsp;Task  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Where &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Date &emsp;&emsp;&emsp; Time</p>
           {todos.map((todo, index) => (
             <Card>
               <Card.Body>
-
                 <Todo
-
                   key={index}
                   index={index}
-
                   todo={todo}
                   markTodo={markTodo}
                   removeTodo={removeTodo}
@@ -221,14 +207,6 @@ function App() {
   );
 }
 async function callingwebsite(addressSoFar) {
-  /*Testing GetDistanceBetweenCoordinates function
-  
-  var todoLocation = [34.122628525138126, -117.68139788871015];
-  var distance = GetDistanceBetweenCoordinates(todoLocation);
-  console.log("The distance " + distance);
-  console.log("the todo location: " + todoLocation);
-  */
-
   if (addressSoFar != undefined) {
     console.log("original: " + addressSoFar);
 
@@ -267,8 +245,8 @@ async function callingwebsite(addressSoFar) {
     )
     .catch(err => console.error(err));
   console.log(cap + "    " + cap1 + "    " + cap2 + "    " + cap3 + "    " + cap4 + "    ");
-  currlocaation = [cap, cap1, cap2, cap3, cap4];
-  console.log(currlocaation);
+  currLocation = [cap, cap1, cap2, cap3, cap4];
+  console.log(currLocation);
   //  return (captuer);
   //console.log("will this work" + response.json());
 }
