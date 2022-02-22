@@ -28,7 +28,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
   );
 }
 
-function GetDistanceBetweenCoordinates({ todoLocation, setDistance }) {
+function GetDistanceBetweenCoordinates({ todoLocation }) {
   const lat1 = (currlocaation[0] * Math.PI) / 180.0;
   const lat2 = (todoLocation[0] * Math.PI) / 180.0;
   const long1 = (currlocaation[1] * Math.PI) / 180.0;
@@ -36,13 +36,9 @@ function GetDistanceBetweenCoordinates({ todoLocation, setDistance }) {
 
 
   const distanceInMiles = 3963 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1))
-  if (setDistance < distanceInMiles) {
-    return true;
 
-  }
-  else {
-    return false;
-  }
+
+  return distanceInMiles
 
 }
 
@@ -202,6 +198,8 @@ function App() {
   );
 }
 async function callingwebsite(addressSoFar) {
+  var distance = GetDistanceBetweenCoordinates([32.4444])
+
   if (addressSoFar != undefined) {
     console.log("original: " + addressSoFar);
 
