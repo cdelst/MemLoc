@@ -22,8 +22,8 @@ function Todo({ todo, index, markTodo, removeTodo }) {
   var locationAndCoor = todo.location_text.split(',');
  // for (var a )
  var locationName = locationAndCoor.splice(0,locationAndCoor.length -2);
-  console.log("loca: " + locationAndCoor[locationAndCoor.length-1]); //variable of cooridante value
-  console.log("loca: " + locationAndCoor[locationAndCoor.length-2]); //variable of cooridante value
+  console.log("coordinate 1: " + locationAndCoor[locationAndCoor.length-1]); //variable of cooridante value
+  console.log("coordinate 2: " + locationAndCoor[locationAndCoor.length-2]); //variable of cooridante value
   console.log("loca: " + locationName);
   console.log("loca: " + todo.location_text[0]);
 
@@ -75,23 +75,29 @@ function FormTodo({ addTodo }) {
   const [date_value, setDate] = React.useState("");
 
   console.log("set location" + setLocation);
-  // console.log("forming of todo:");
-  // console.log(location_value);
-  // console.log(value);
-  // console.log("compair: " + locationrn + " and: " + location_value);
+
   if (locationrn != location_value_in) {
     callingwebsite(location_value_in);
     locationrn = location_value_in;
   }
 
   const myArray = currLocation;
+  console.log("my array: " + myArray);
+  console.log(currLocation);
+  console.log(myArray[0]);
   const options = myArray.map((item) => {
-
+      if (item != ",-1,-1"){
+        console.log("item: " + item);
     return (
+      
       <option key={item} value={[item[0],item[1]]}>
           {item[0]}
       </option>
+      
     )
+      } else{
+        console.log("skiped this value since it is not real");
+      }
   })
 
   const [time_value, setTime] = React.useState("");
