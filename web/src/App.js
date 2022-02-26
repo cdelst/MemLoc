@@ -7,17 +7,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 var locationrn = ".";
 var currlocaation = [];
+var coordOfLocation = [];
 function Todo({ todo, index, markTodo, removeTodo }) {
   console.log("train");
  
   
   console.log(todo);
+  var locationAndCoor = todo.location_text.split(',');
+ // for (var a )
+ var locationName = locationAndCoor.splice(0,locationAndCoor.length -2);
+  console.log("loca: " + locationAndCoor[locationAndCoor.length-1]);
+  console.log("loca: " + locationAndCoor[locationAndCoor.length-2]);
+  console.log("loca: " + locationName);
+  console.log("loca: " + todo.location_text[0]);
+
+  
   return (
     <div
       className="todo"
     >
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
-      <span >{todo.location_text}</span>
+      <span >{locationName}</span>
       <span >{todo.date_text}</span>
       <span >{todo.time_text}</span>
       <div>
@@ -32,8 +42,10 @@ function Todo({ todo, index, markTodo, removeTodo }) {
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
+  const [location_value_coords, setLocationCoords] = React.useState("");
   const [location_value_in, setLocation_in] = React.useState("");
   const [date_value, setDate] = React.useState("");
+  console.log("set location" + setLocation);
   // console.log("forming of todo:");
   // console.log(location_value);
   // console.log(value);
@@ -52,9 +64,9 @@ function FormTodo({ addTodo }) {
   const options = myArray.map((item) => {
 
     return (
-      <option key={item} value={item}>
+      <option key={item} value={[item[0],item[1]]}>
     
-          {item}
+          {item[0]}
         
       </option>
     )
@@ -82,6 +94,7 @@ function FormTodo({ addTodo }) {
     setValue("");
     setLocation("");
     setLocation_in("");
+    setLocationCoords("");
     setDate("");
     setTime("");
   };
@@ -97,8 +110,9 @@ function FormTodo({ addTodo }) {
       <Form.Control type="text" className="input" value={location_value_in} onChange={e => setLocation_in(e.target.value)} placeholder="Look up where" /> 
       <Form.Control
           as="select"
-          value ={value}
+          value ={options}
           onChange={e => setLocation(e.target.value)}
+        
         >
          {options}
         </Form.Control>
@@ -198,18 +212,43 @@ async function callingwebsite(addressSoFar){
   var cap2= "";
   var cap3 = "";
   var cap4 = "";
-console.log("the address" +addressSoFar);
+  var coord11 = -1;
+  var coord12 = -1;
+  var coord21 = -1;
+  var coord22 = -1;
+  var coord31 = -1;
+  var coord32 = -1;
+  var coord41 = -1;
+  var coord42 = -1;
+  var coord51 = -1;
+  var coord52 = -1;
+  
+//console.log("the address" +addressSoFar);
 
 //let response = 
 await fetch('https://app.geocodeapi.io/api/v1/autocomplete?text=' + adressable +'&size=5&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff')
     .then(response => response.json())
     .then( json => { console.log(json);
     //   json => {
+      console.log("coodrs: " + json.features[0].geometry.coordinates[0]);
+      console.log("num 2: " +json.features[0].geometry.coordinates[1]);
       cap = json.features[0].properties.label;
       cap1 = json.features[1].properties.label;
       cap2 = json.features[2].properties.label;
       cap3 = json.features[3].properties.label;
       cap4 = json.features[4].properties.label;
+      coord11 = json.features[0].geometry.coordinates[0];
+      coord12 = json.features[0].geometry.coordinates[1];
+      coord21 = json.features[1].geometry.coordinates[0];
+      coord22 = json.features[1].geometry.coordinates[1];
+      coord31 = json.features[2].geometry.coordinates[0];
+      coord32 = json.features[2].geometry.coordinates[1];
+      coord41 = json.features[3].geometry.coordinates[0];
+      coord42 = json.features[3].geometry.coordinates[1];
+      coord51 = json.features[4].geometry.coordinates[0];
+      coord52 = json.features[4].geometry.coordinates[1];
+  
+
     console.log(cap );
     console.log(cap1 );
     console.log(cap2);
@@ -222,8 +261,10 @@ await fetch('https://app.geocodeapi.io/api/v1/autocomplete?text=' + adressable +
     )
     .catch(err => console.error(err));
      console.log(cap + "    " +cap1 + "    " + cap2 + "    " + cap3 + "    " + cap4 + "    ");
-     currlocaation = [cap, cap1, cap2, cap3, cap4 ];
+     currlocaation = [[cap,[coord11, coord12]],[cap1,[coord21,coord22]],[cap2,[coord31,coord32]], [cap3,[coord41,coord42]], [cap4,[coord51,coord52]]]; //[cap, cap1, cap2, cap3, cap4 ];
+     //coordOfLocation = [[cap,[coord11, coord12]],[cap1,[coord21,coord22]],[cap2,[coord31,coord32]], [cap3,[coord41,coord42]], [cap4,[coord51,coord52]]];
      console.log(currlocaation);
+     console.log(coordOfLocation);
    //  return (captuer);
   //console.log("will this work" + response.json());
  }
