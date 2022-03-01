@@ -42,7 +42,8 @@
     ]
   },
   "devDependencies": {
-    "json-loader": "^0.5.7"
+    "json-loader": "^0.5.7",
+    "prettier": "2.5.1"
   },
   "proxy": "http://localhost:3000"
 }
