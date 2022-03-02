@@ -171,6 +171,7 @@ function FormTodo({ addTodo }) {
           placeholder="Add Time"
         />
       </Form.Group>
+      <p></p>
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
@@ -179,6 +180,7 @@ function FormTodo({ addTodo }) {
 }
 
 function App() {
+  
   const [todos, setTodos] = React.useState([
     {
       text: "Pick up dog",
@@ -186,6 +188,7 @@ function App() {
       date_text: "1-1-11",
       time_text: "1:00",
       isDone: false,
+      phNo: "",
     },
   ]);
 
@@ -258,34 +261,58 @@ function App() {
   };
   setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
 
+  // Initial page set up
+  const [phNo, setPhone] = React.useState("");
+  const [showpage, setShowpage] = React.useState(false);
+
   return (
     <div className="app">
       <div className="container">
         <h1 className="text-center mb-4">Todo List</h1>
-        <FormTodo addTodo={addTodo} />
-        <div>
-          <p>
-            {" "}
-            &emsp;Task
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            Where
-            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-            Date &emsp;&emsp;&emsp; Time
-          </p>
-          {todos.map((todo, index) => (
-            <Card>
-              <Card.Body>
-                <Todo
-                  key={index}
-                  index={index}
-                  todo={todo}
-                  markTodo={markTodo}
-                  removeTodo={removeTodo}
-                />
-              </Card.Body>
-            </Card>
-          ))}
-        </div>
+        {  !showpage && (
+          <div>
+            <form onSubmit={() => {
+              let phone = document.getElementById("phone").value;
+              setPhone(phone);
+              setShowpage(true);}}>
+            <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
+            <input type="tel" id="phone" name="phone" placeholder="Ex: 123-456-7891"required
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>
+              <br></br>
+            <button type="submit">
+              let's get started!
+            </button>
+              </form>
+          </div>
+        )}
+        {  showpage && (
+          <div>
+          <FormTodo addTodo={addTodo} />
+          <div>
+            <p>
+              {" "}
+              &emsp;Task
+              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+              Where
+              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+              Date &emsp;&emsp;&emsp; Time
+            </p>
+            {todos.map((todo, index) => (
+              <Card>
+                <Card.Body>
+                  <Todo
+                    key={index}
+                    index={index}
+                    todo={todo}
+                    markTodo={markTodo}
+                    removeTodo={removeTodo}
+                  />
+                </Card.Body>
+              </Card>
+            ))}
+          </div>
+          </div>
+        ) }
       </div>
     </div>
   );
