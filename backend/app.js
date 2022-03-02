@@ -40,18 +40,12 @@ app.get('/', (req, res) => {
 })
 
 app.post('/sendText', (req, res) => {
-  console.log("HERERERERE");
-  console.log(req.header("Content-Type"));
-  console.log("HELLO");
-  console.log(req.body);
   if (req.header("Content-Type") !== "application/json") {
-    console.log("one");
     res.send("Bad request");
     return;
   }
 
   if (Object.keys(req.body).length === 0) {
-    console.log("two");
     res.send("Empty body");
     return;
   }
