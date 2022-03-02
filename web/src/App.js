@@ -64,15 +64,25 @@ function GetDistanceBetweenCoordinates(todoLocation) {
   return distanceInMiles;
 }
 
-function Popup({ todoLocation }) {
+function Popup({ todoLocation, todoItem }) {
   if (
-    currLocation[0] == todoLocation[0] &&
-    currLocation[1] == todoLocation[1]
+    GetDistanceBetweenCoordinates(todoLocation) < 10
   ) {
+    const obj = {location: todoLocation, task: todoItem};
+    sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
 }
+function sendNotificationToUser(obj) {
 
+  fetch('/sendText', {  // Enter your IP address here
+    headers: new Headers({'content-type': 'application/json'}),
+    method: 'POST', 
+    mode: 'cors', 
+    body: JSON.stringify(obj) 
+
+  })
+}
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
@@ -174,6 +184,9 @@ function FormTodo({ addTodo }) {
       <p></p>
       <Button variant="primary mb-3" type="submit">
         Submit
+      </Button>
+      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser}>
+        Dummy Button
       </Button>
     </Form>
   );
