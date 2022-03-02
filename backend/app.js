@@ -3,8 +3,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const accountSid = 'AC6c41d9923fecf6378c93a5714d999f3a';
-const authToken = '797ed50685cbb72bdc327a3d060748f7';
+const accountSid = 'replaceThis';
+const authToken = 'replaceThis';
 const client = require('twilio')(accountSid, authToken);
 
 var lastKnownLocationObject = {
