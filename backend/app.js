@@ -3,6 +3,10 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const accountSid = 'replaceThis';
+const authToken = 'replaceThis';
+const client = require('twilio')(accountSid, authToken);
+
 var lastKnownLocationObject = {
     type: 'Feature',
     geometry: {
@@ -33,6 +37,20 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
+})
+
+app.post('/sendText', (req, res) => {
+  if (req.header("Content-Type") !== "application/json") {
+    res.send("Bad request");
+    return;
+  }
+
+  if (Object.keys(req.body).length === 0) {
+    res.send("Empty body");
+    return;
+  }
+  sendTextMessages(req.body);
+  res.status(201);
 })
 
 app.post('/put-location', (req, res) => {
@@ -102,5 +120,16 @@ const setCoordinates = (coords) => {
   lastKnownLocationObject = coords
 }
 
+function sendTextMessages(postMessage) {
+  console.log("in sendTextMessages" + postMessage.location + " " + postMessage.task);
+client.messages
+  .create({
+     body: postMessage.location + postMessage.task,
+     from: '+19108078143',
+     to: '+19168057009'
+   })
+  .then(message => console.log(message.sid));
+  
+}
 module.exports = app
 module.exports.setCoordinates = setCoordinates
