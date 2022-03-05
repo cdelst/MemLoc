@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 var locationrn = ".";
 var currLocation = [];
-var currlocaation = [];
 var coordOfLocation = [];
 function Todo({ todo, index, markTodo, removeTodo }) {
   
@@ -82,12 +81,12 @@ function FormTodo({ addTodo }) {
   }
 
   const myArray = currLocation;
-  console.log("my array: " + myArray);
-  console.log(currLocation);
-  console.log(myArray[0]);
+ // console.log("my array: " + myArray);
+  //console.log(currLocation);
+  //console.log(myArray[0]);
   const options = myArray.map((item) => {
       if (item != ",-1,-1"){
-        console.log("item: " + item);
+       // console.log("item: " + item);
     return (
       
       <option key={item} value={[item[0],item[1]]}>
@@ -167,7 +166,7 @@ function App() {
         .then((json) => {
           setBackendLocation(json)
         })
-    console.log('backend location: ' + backendLocation)
+   
   }, [])
 
   const addTodo = (text, location_text, date_text, time_text) => {
@@ -211,7 +210,14 @@ function App() {
   //the spacing is temporary I want to figuer it out difinitavly after all of the sections are filled
   return (
     <div className="app">
+      <p>
+        phone number
+      </p>
+      <input type="tel" id="phone" name="phone"
+       pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+       required></input>
       <div className="container">
+         
         <h1 className="text-center mb-4">Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
