@@ -65,23 +65,20 @@ function GetDistanceBetweenCoordinates(todoLocation) {
 }
 
 function Popup({ todoLocation, todoItem }) {
-  if (
-    GetDistanceBetweenCoordinates(todoLocation) < 10
-  ) {
+  if (GetDistanceBetweenCoordinates(todoLocation) < 10) {
     const obj = { location: todoLocation, task: todoItem };
     sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
 }
 function sendNotificationToUser(obj) {
-
-  fetch('/sendText', {  // Enter your IP address here
-    headers: new Headers({ 'content-type': 'application/json' }),
-    method: 'POST',
-    mode: 'cors',
-    body: JSON.stringify(obj)
-
-  })
+  fetch("/sendText", {
+    // Enter your IP address here
+    headers: new Headers({ "content-type": "application/json" }),
+    method: "POST",
+    mode: "cors",
+    body: JSON.stringify(obj),
+  });
 }
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
@@ -104,7 +101,6 @@ function FormTodo({ addTodo }) {
     if (item !== ",-1,-1" && item !== ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
-
           {item[0]}
         </option>
       );
@@ -159,7 +155,7 @@ function FormTodo({ addTodo }) {
         />
         <Form.Control
           as="select"
-          value={value}
+          value={location_value}
           colorproperty="red"
           onChange={(e) => setLocation(e.target.value)}
         >
@@ -187,20 +183,18 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser}>
+      <Button
+        variant="primary mb-3"
+        type="dummy"
+        onClick={sendNotificationToUser}
+      >
         Dummy Button
       </Button>
     </Form>
   );
 }
 
-function FormLogin() {
-
-}
-
-
 function App() {
-
   const [todos, setTodos] = React.useState([
     {
       text: "Pick up dog",
@@ -215,7 +209,6 @@ function App() {
   const [backendLocation, setBackendLocation] = React.useState(undefined);
 
   useEffect(() => {
-
     fetch("/get-location")
       .then((res) => res.json())
       .then((json) => {
@@ -329,32 +322,10 @@ function App() {
                 Lets get started
               </Button>
             </Form>
-            {/* <form onSubmit={() => {
-              let phone = document.getElementById("phone").value;
-              let name  = document.getElementById("name").value;
-              setUserName(name);
-              setPhone(phone);
-              setShowpage(true);
-              console.log(userName)}}>
-              <div>
-                <label>Enter your Name: </label>
-                <input type="text" id="name"></input>
-              </div>
-              <div>
-                <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
-                <input type="tel" id="phone" name="phone" placeholder="Ex: 123-456-7891"required
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>
-              </div>
-              <Button variant="primary mb-3" type="submit">
-                Lets get started
-              </Button>
-              </form> */}
           </div>
-
         )}
         {showpage && (
           <div>
-            <h2 >Welcome {userName}!</h2>
             <FormTodo addTodo={addTodo} />
             <div>
               <div id="mozdiv1">
@@ -362,10 +333,10 @@ function App() {
                 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                 Where
                 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                Date &emsp;&emsp;&emsp; Time</div>
+                Date &emsp;&emsp;&emsp; Time
+              </div>
 
               {todos.map((todo, index) => (
-
                 <Card>
                   <Card.Body>
                     <Todo
@@ -385,7 +356,6 @@ function App() {
     </div>
   );
 }
-
 
 // &emsp;Task
 // &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -411,7 +381,6 @@ async function callingwebsite(addressSoFar) {
   //doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
   //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
   //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
-
 
   await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
