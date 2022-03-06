@@ -314,7 +314,8 @@ function App() {
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
  Where
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
- Date &emsp;&emsp;&emsp; Time</div>
+ Date &emsp;&emsp;&emsp; Time
+ </div>
          
             {todos.map((todo, index) => (
             
@@ -369,7 +370,7 @@ await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
       adressable +
       "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
-  ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
+  ) 
     .then((response) => response.json())
 
     .then((json) => {
