@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 var locationrn = ".";
 var currLocation = [];
-var coordOfLocation = [];
+
 function Todo({ todo, index, markTodo, removeTodo }) {
   var displayLocationDue = false;
   if (todo.coordinates) {
@@ -25,7 +25,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
   return (
     <div
       className="todo"
-      style={{ backgroundColor: displayLocationDue ? "gold" : "" }}
+      style={{ backgroundColor: displayLocationDue ? "black" : "" }}
     >
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>
         {todo.text}
@@ -86,7 +86,7 @@ function sendNotificationToUser(obj) {
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
   const [location_value, setLocation] = React.useState("");
-  const [location_value_coords, setLocationCoords] = React.useState("");
+  //const [location_value_coords, setLocationCoords] = React.useState("");
   const [location_value_in, setLocation_in] = React.useState("");
   const [date_value, setDate] = React.useState("");
 
@@ -130,7 +130,6 @@ function FormTodo({ addTodo }) {
     setValue("");
     setLocation("");
     setLocation_in("");
-    setLocationCoords("");
     setDate("");
     setTime("");
   };
@@ -150,17 +149,18 @@ function FormTodo({ addTodo }) {
           placeholder="Add new todo task"
           required
         />
-        <b>Where: </b>
+        <b>Location: </b>
         <Form.Control
           type="text"
           className="input"
           value={location_value_in}
           onChange={(e) => setLocation_in(e.target.value)}
-          placeholder="Look up where"
+          placeholder="ex. 1234 Main st., CA"
         />
         <Form.Control
           as="select"
           value={value}
+          colorproperty ="red"
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -189,10 +189,11 @@ function FormTodo({ addTodo }) {
       </Button>
       <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser}>
         Dummy Button
-      </Button>
+      </Button> 
     </Form>
   );
 }
+ 
 
 function App() {
   
@@ -283,12 +284,7 @@ function App() {
 
   return (
     <div className="app">
-      <p>
-        phone number
-      </p>
-      <input type="tel" id="phone" name="phone"
-       pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-       required></input>
+      
       <div className="container">
          
         <h1 className="text-center mb-4">Todo List</h1>
@@ -307,20 +303,24 @@ function App() {
             </button>
               </form>
           </div>
+      
         )}
         {  showpage && (
           <div>
           <FormTodo addTodo={addTodo} />
           <div>
-            <p>
-              {" "}
-              &emsp;Task
-              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-              Where
-              &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-              Date &emsp;&emsp;&emsp; Time
-            </p>
+          <div id="mozdiv1">
+          &emsp;Task
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+ Where
+ &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+ Date &emsp;&emsp;&emsp; Time</div>
+          <center>
+            {"where", "time","before"}
+          </center>
+            
             {todos.map((todo, index) => (
+            
               <Card>
                 <Card.Body>
                   <Todo
@@ -340,7 +340,15 @@ function App() {
     </div>
   );
 }
+
+
+// &emsp;Task
+// &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+// Where
+// &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+// Date &emsp;&emsp;&emsp; Time
 async function callingwebsite(addressSoFar) {
+  //var adressable = "";
   if (addressSoFar != undefined) {
     var adressable = addressSoFar.replace(/ /g, "%20");
   }
@@ -355,12 +363,16 @@ async function callingwebsite(addressSoFar) {
   var coord3 = [];
   var coord4 = [];
   var coord5 = [];
+//doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
+//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
+//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
 
-  await fetch(
+
+await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
       adressable +
-      "&size=5&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
-  )
+      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+  ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
     .then((json) => {

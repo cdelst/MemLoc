@@ -3,7 +3,7 @@
 }
 .app {
   padding: 30px;
-  background-color: floralwhite;
+  background-color: rgb(225, 241, 248);
 }
 
 .todo {
@@ -22,6 +22,13 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+#mozdiv1 {
+  text-align: center;
+  text-underline-offset:;
+
+}
+
 
 .App-header {
   background-color: #282c34;
