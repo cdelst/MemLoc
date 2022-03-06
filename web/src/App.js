@@ -315,10 +315,7 @@ function App() {
  Where
  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
  Date &emsp;&emsp;&emsp; Time</div>
-          <center>
-            {"where", "time","before"}
-          </center>
-            
+         
             {todos.map((todo, index) => (
             
               <Card>
