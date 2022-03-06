@@ -57,7 +57,7 @@ function GetDistanceBetweenCoordinates(todoLocation) {
     3963 *
     Math.acos(
       Math.sin(lat1) * Math.sin(lat2) +
-        Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
+      Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
     );
 
   console.log("The distance in miles" + distanceInMiles);
@@ -68,7 +68,7 @@ function Popup({ todoLocation, todoItem }) {
   if (
     GetDistanceBetweenCoordinates(todoLocation) < 10
   ) {
-    const obj = {location: todoLocation, task: todoItem};
+    const obj = { location: todoLocation, task: todoItem };
     sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
@@ -76,10 +76,10 @@ function Popup({ todoLocation, todoItem }) {
 function sendNotificationToUser(obj) {
 
   fetch('/sendText', {  // Enter your IP address here
-    headers: new Headers({'content-type': 'application/json'}),
-    method: 'POST', 
-    mode: 'cors', 
-    body: JSON.stringify(obj) 
+    headers: new Headers({ 'content-type': 'application/json' }),
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(obj)
 
   })
 }
@@ -93,7 +93,7 @@ function FormTodo({ addTodo }) {
   // TODO This function makes a call every single time a letter is typed.  Because the locationrn variable is global,
   //  we can't use a hook to debounce this. This probably needs to be fixed but tbh going through the effort of making
   //  everything non-global is effort. Just an FYI for anyone wondering why we're getting 429's
-  if (locationrn != location_value_in) {
+  if (locationrn !== location_value_in) {
     callingwebsite(location_value_in);
     locationrn = location_value_in;
   }
@@ -101,7 +101,7 @@ function FormTodo({ addTodo }) {
   const myArray = currLocation;
 
   const options = myArray.map((item) => {
-    if (item != ",-1,-1" && item != ",") {
+    if (item !== ",-1,-1" && item !== ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
 
@@ -160,7 +160,7 @@ function FormTodo({ addTodo }) {
         <Form.Control
           as="select"
           value={value}
-          colorproperty ="red"
+          colorproperty="red"
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -189,14 +189,18 @@ function FormTodo({ addTodo }) {
       </Button>
       <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser}>
         Dummy Button
-      </Button> 
+      </Button>
     </Form>
   );
 }
- 
+
+function FormLogin() {
+
+}
+
 
 function App() {
-  
+
   const [todos, setTodos] = React.useState([
     {
       text: "Pick up dog",
@@ -261,15 +265,15 @@ function App() {
     for (let i = 0; i < todos.length; i++) {
       if (todos[i].date_text !== "") {
         if (
-          todos[i].date_text == today &&
-          todos[i].time_text == "" &&
-          curr_time == "9:00"
+          todos[i].date_text === today &&
+          todos[i].time_text === "" &&
+          curr_time === "9:00"
         ) {
           // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
         } else if (
-          todos[i].date_text == today &&
-          todos[i].time_text == curr_time
+          todos[i].date_text === today &&
+          todos[i].time_text === curr_time
         ) {
           alert("time to do: " + todos[i].text);
         }
@@ -280,59 +284,103 @@ function App() {
 
   // Initial page set up
   const [phNo, setPhone] = React.useState("");
+  const [userName, setUserName] = React.useState("");
   const [showpage, setShowpage] = React.useState(false);
+
+  const login = (e) => {
+    e.preventDefault();
+    setShowpage(true);
+  }
 
   return (
     <div className="app">
-      
+
       <div className="container">
-         
-        <h1 className="text-center mb-4">Todo List</h1>
-        {  !showpage && (
+
+        <h1 className="text-center mb-4">MemLoc</h1>
+        {!showpage && (
           <div>
-            <form onSubmit={() => {
-              let phone = document.getElementById("phone").value;
-              setPhone(phone);
-              setShowpage(true);}}>
-            <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
-            <input type="tel" id="phone" name="phone" placeholder="Ex: 123-456-7891"required
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>
-              <br></br>
-            <button type="submit">
-              let's get started!
-            </button>
-              </form>
-          </div>
-      
-        )}
-        {  showpage && (
-          <div>
-          <FormTodo addTodo={addTodo} />
-          <div>
-          <div id="mozdiv1">
-          &emsp;Task
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
- Where
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
- Date &emsp;&emsp;&emsp; Time</div>
-         
-            {todos.map((todo, index) => (
-            
-              <Card>
-                <Card.Body>
-                  <Todo
-                    key={index}
-                    index={index}
-                    todo={todo}
-                    markTodo={markTodo}
-                    removeTodo={removeTodo}
+            <Form onSubmit={login}>
+              <Form.Group>
+                <Form.Label>
+                  <b>Enter your Name: </b>
+                  <Form.Control
+                    type="text"
+                    className="input"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="John Doe"
                   />
-                </Card.Body>
-              </Card>
-            ))}
+                </Form.Label>
+                <p></p>
+                <b>Enter your phone number (Format: xxx-xxx-xxxx):</b>
+                <Form.Control
+                  type="tel"
+                  className="input"
+                  value={phNo}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Ex: 123-456-7891"
+                  required
+                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                />
+              </Form.Group>
+              <p></p>
+              <Button variant="primary mb-3" type="submit">
+                Lets get started
+              </Button>
+            </Form>
+            {/* <form onSubmit={() => {
+              let phone = document.getElementById("phone").value;
+              let name  = document.getElementById("name").value;
+              setUserName(name);
+              setPhone(phone);
+              setShowpage(true);
+              console.log(userName)}}>
+              <div>
+                <label>Enter your Name: </label>
+                <input type="text" id="name"></input>
+              </div>
+              <div>
+                <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
+                <input type="tel" id="phone" name="phone" placeholder="Ex: 123-456-7891"required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>
+              </div>
+              <Button variant="primary mb-3" type="submit">
+                Lets get started
+              </Button>
+              </form> */}
           </div>
+
+        )}
+        {showpage && (
+          <div>
+            <h2 >Welcome {userName}!</h2>
+            <FormTodo addTodo={addTodo} />
+            <div>
+              <div id="mozdiv1">
+                &emsp;Task
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                Where
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                Date &emsp;&emsp;&emsp; Time</div>
+
+              {todos.map((todo, index) => (
+
+                <Card>
+                  <Card.Body>
+                    <Todo
+                      key={index}
+                      index={index}
+                      todo={todo}
+                      markTodo={markTodo}
+                      removeTodo={removeTodo}
+                    />
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
           </div>
-        ) }
+        )}
       </div>
     </div>
   );
@@ -346,7 +394,7 @@ function App() {
 // Date &emsp;&emsp;&emsp; Time
 async function callingwebsite(addressSoFar) {
   //var adressable = "";
-  if (addressSoFar != undefined) {
+  if (addressSoFar !== undefined) {
     var adressable = addressSoFar.replace(/ /g, "%20");
   }
 
@@ -360,15 +408,15 @@ async function callingwebsite(addressSoFar) {
   var coord3 = [];
   var coord4 = [];
   var coord5 = [];
-//doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
-//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
-//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
+  //doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
+  //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
+  //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
 
 
-await fetch(
+  await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
-      adressable +
-      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+    adressable +
+    "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
   ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
