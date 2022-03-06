@@ -65,23 +65,20 @@ function GetDistanceBetweenCoordinates(todoLocation) {
 }
 
 function Popup({ todoLocation, todoItem }) {
-  if (
-    GetDistanceBetweenCoordinates(todoLocation) < 10
-  ) {
-    const obj = {location: todoLocation, task: todoItem};
+  if (GetDistanceBetweenCoordinates(todoLocation) < 10) {
+    const obj = { location: todoLocation, task: todoItem };
     sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
 }
 function sendNotificationToUser(obj) {
-
-  fetch('/sendText', {  // Enter your IP address here
-    headers: new Headers({'content-type': 'application/json'}),
-    method: 'POST', 
-    mode: 'cors', 
-    body: JSON.stringify(obj) 
-
-  })
+  fetch("/sendText", {
+    // Enter your IP address here
+    headers: new Headers({ "content-type": "application/json" }),
+    method: "POST",
+    mode: "cors",
+    body: JSON.stringify(obj),
+  });
 }
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
@@ -104,7 +101,6 @@ function FormTodo({ addTodo }) {
     if (item != ",-1,-1" && item != ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
-
           {item[0]}
         </option>
       );
@@ -159,8 +155,8 @@ function FormTodo({ addTodo }) {
         />
         <Form.Control
           as="select"
-          value={value}
-          colorproperty ="red"
+          value={location_value}
+          colorproperty="red"
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -187,16 +183,18 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser}>
+      <Button
+        variant="primary mb-3"
+        type="dummy"
+        onClick={sendNotificationToUser}
+      >
         Dummy Button
-      </Button> 
+      </Button>
     </Form>
   );
 }
- 
 
 function App() {
-  
   const [todos, setTodos] = React.useState([
     {
       text: "Pick up dog",
@@ -211,7 +209,6 @@ function App() {
   const [backendLocation, setBackendLocation] = React.useState(undefined);
 
   useEffect(() => {
-
     fetch("/get-location")
       .then((res) => res.json())
       .then((json) => {
@@ -284,30 +281,32 @@ function App() {
 
   return (
     <div className="app">
-      
       <div className="container">
-         
         <h1 className="text-center mb-4">Todo List</h1>
-        {  !showpage && (
+        {!showpage && (
           <div>
-            <form onSubmit={() => {
-              let phone = document.getElementById("phone").value;
-              setPhone(phone);
-              setShowpage(true);}}>
-            <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
-            <input type="tel" id="phone" name="phone" placeholder="Ex: 123-456-7891"required
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>
+            <form
+              onSubmit={() => {
+                let phone = document.getElementById("phone").value;
+                setPhone(phone);
+                setShowpage(true);
+              }}
+            >
+              <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Ex: 123-456-7891"
+                required
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              ></input>
               <br></br>
-            <button type="submit">
-              let's get started!
-            </button>
-              </form>
+              <button type="submit">let's get started!</button>
+            </form>
           </div>
-      
         )}
-        {  showpage && (
-          <div>
-          <FormTodo addTodo={addTodo} />
+        {showpage && (
           <div>
           <div id="mozdiv1">
           &emsp;Task
@@ -332,13 +331,13 @@ function App() {
               </Card>
             ))}
           </div>
+
           </div>
-        ) }
+        )}
       </div>
     </div>
   );
 }
-
 
 // &emsp;Task
 // &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -361,12 +360,11 @@ async function callingwebsite(addressSoFar) {
   var coord3 = [];
   var coord4 = [];
   var coord5 = [];
-//doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
-//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
-//https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
+  //doesnt work: (this restrict what could be searched but are throughing errors so I am usign a focusing point on santa cruz)
+  //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.country=ISO-3166&boundary.circle.lon=36.9741&boundary.circle.lat=-122.0308&boundary.circle.radius=35&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
+  //https://app.geocodeapi.io/api/v1/autocomplete?text=106&size=5&boundary.rect.min_lat=30.0000&boundary.rect.min_lon=-124.387058&boundary.rect.max_lat=38.0000&boundary.rect.max_lon=-116.568638&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff
 
-
-await fetch(
+  await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
       adressable +
       "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
