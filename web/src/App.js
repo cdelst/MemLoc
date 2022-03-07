@@ -57,7 +57,7 @@ function GetDistanceBetweenCoordinates(todoLocation) {
     3963 *
     Math.acos(
       Math.sin(lat1) * Math.sin(lat2) +
-        Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
+      Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
     );
 
   console.log("The distance in miles" + distanceInMiles);
@@ -90,7 +90,7 @@ function FormTodo({ addTodo }) {
   // TODO This function makes a call every single time a letter is typed.  Because the locationrn variable is global,
   //  we can't use a hook to debounce this. This probably needs to be fixed but tbh going through the effort of making
   //  everything non-global is effort. Just an FYI for anyone wondering why we're getting 429's
-  if (locationrn != location_value_in) {
+  if (locationrn !== location_value_in) {
     callingwebsite(location_value_in);
     locationrn = location_value_in;
   }
@@ -98,7 +98,7 @@ function FormTodo({ addTodo }) {
   const myArray = currLocation;
 
   const options = myArray.map((item) => {
-    if (item != ",-1,-1" && item != ",") {
+    if (item !== ",-1,-1" && item !== ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
           {item[0]}
@@ -132,11 +132,8 @@ function FormTodo({ addTodo }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group>
-        <Form.Label>
-          <b>Add Todo</b>
-        </Form.Label>
         <p></p>
-        <b>ToDo:</b>
+        <b>Task:</b>
         <Form.Control
           type="text"
           className="input"
@@ -202,7 +199,6 @@ function App() {
       date_text: "1-1-11",
       time_text: "1:00",
       isDone: false,
-      phNo: "",
     },
   ]);
 
@@ -258,15 +254,15 @@ function App() {
     for (let i = 0; i < todos.length; i++) {
       if (todos[i].date_text !== "") {
         if (
-          todos[i].date_text == today &&
-          todos[i].time_text == "" &&
-          curr_time == "9:00"
+          todos[i].date_text === today &&
+          todos[i].time_text === "" &&
+          curr_time === "9:00"
         ) {
           // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
         } else if (
-          todos[i].date_text == today &&
-          todos[i].time_text == curr_time
+          todos[i].date_text === today &&
+          todos[i].time_text === curr_time
         ) {
           alert("time to do: " + todos[i].text);
         }
@@ -277,62 +273,94 @@ function App() {
 
   // Initial page set up
   const [phNo, setPhone] = React.useState("");
+  const [userName, setUserName] = React.useState("");
   const [showpage, setShowpage] = React.useState(false);
+
+  const login = (e) => {
+    e.preventDefault();
+    setShowpage(true);
+  }
 
   return (
     <div className="app">
+
       <div className="container">
-        <h1 className="text-center mb-4">Todo List</h1>
+
+        <h1 className="text-center mb-4">MemLoc</h1>
         {!showpage && (
-          <div>
-            <form
-              onSubmit={() => {
-                let phone = document.getElementById("phone").value;
-                setPhone(phone);
-                setShowpage(true);
-              }}
-            >
-              <label>Enter your phone number (Format: xxx-xxx-xxxx): </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                placeholder="Ex: 123-456-7891"
-                required
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              ></input>
-              <br></br>
-              <button type="submit">let's get started!</button>
-            </form>
+          <div className="login">
+            <Form onSubmit={login}>
+              <Form.Group>
+                <Form.Label>
+                  <b>Name: </b>
+                  <Form.Control
+                    type="text"
+                    className="input"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    placeholder="John Doe"
+                  />
+                </Form.Label>
+                <p></p>
+                <Form.Label>
+                  <b>Phone Number </b>(Format: xxx-xxx-xxxx):
+                  <Form.Control
+                    type="tel"
+                    className="input"
+                    value={phNo}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Ex: 123-456-7891"
+                    required
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  />
+                </Form.Label>
+              </Form.Group>
+              <p></p>
+              <Button variant="primary mb-3" type="submit">
+                Lets get started
+              </Button>
+            </Form>
           </div>
         )}
         {showpage && (
           <div>
-            <FormTodo addTodo={addTodo} />
-            <div>
-              <div id="mozdiv1">
-                &emsp;Task
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                Where
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                Date &emsp;&emsp;&emsp; Time
+            <div className="welcome">
+              <h2>Welcome {userName}!</h2>
+            </div>
+            <div className="grid-container">
+              <div className="grid-child 2">
+                <FormTodo addTodo={addTodo} />
               </div>
+              <div className="grid-child 1">
+                <div className="todo-list">
+                  <h3>Todo:</h3>
+                  <br></br>
+                  &emsp;Task
+                  &emsp;&emsp;&emsp;
+                  Where
+                  &emsp;&emsp;&emsp;&emsp;&emsp;
+                  Date &emsp;&emsp;&emsp; Time
 
-              {todos.map((todo, index) => (
-                <Card>
-                  <Card.Body>
-                    <Todo
-                      key={index}
-                      index={index}
-                      todo={todo}
-                      markTodo={markTodo}
-                      removeTodo={removeTodo}
-                    />
-                  </Card.Body>
-                </Card>
-              ))}
+                  {todos.map((todo, index) => (
+                    <Card>
+                      <Card.Body>
+                        <Todo
+                          key={index}
+                          index={index}
+                          todo={todo}
+                          markTodo={markTodo}
+                          removeTodo={removeTodo}
+                        />
+                      </Card.Body>
+                    </Card>
+                  ))}
+                </div>
+                <div>
+                </div>
+              </div>
             </div>
           </div>
+
         )}
       </div>
     </div>
@@ -342,7 +370,7 @@ function App() {
 
 async function callingwebsite(addressSoFar) {
   //var adressable = "";
-  if (addressSoFar != undefined) {
+  if (addressSoFar !== undefined) {
     var adressable = addressSoFar.replace(/ /g, "%20");
   }
 
@@ -362,8 +390,8 @@ async function callingwebsite(addressSoFar) {
 
   await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
-      adressable +
-      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+    adressable +
+    "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
   ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
