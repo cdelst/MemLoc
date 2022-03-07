@@ -132,11 +132,8 @@ function FormTodo({ addTodo }) {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group>
-        <Form.Label>
-          <b>Add Todo</b>
-        </Form.Label>
         <p></p>
-        <b>ToDo:</b>
+        <b>Task:</b>
         <Form.Control
           type="text"
           className="input"
@@ -202,7 +199,6 @@ function App() {
       date_text: "1-1-11",
       time_text: "1:00",
       isDone: false,
-      phNo: "",
     },
   ]);
 
@@ -292,11 +288,11 @@ function App() {
 
         <h1 className="text-center mb-4">MemLoc</h1>
         {!showpage && (
-          <div>
+          <div className="login">
             <Form onSubmit={login}>
               <Form.Group>
                 <Form.Label>
-                  <b>Enter your Name: </b>
+                  <b>Name: </b>
                   <Form.Control
                     type="text"
                     className="input"
@@ -306,16 +302,18 @@ function App() {
                   />
                 </Form.Label>
                 <p></p>
-                <b>Enter your phone number (Format: xxx-xxx-xxxx):</b>
-                <Form.Control
-                  type="tel"
-                  className="input"
-                  value={phNo}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Ex: 123-456-7891"
-                  required
-                  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                />
+                <Form.Label>
+                  <b>Phone Number </b>(Format: xxx-xxx-xxxx):
+                  <Form.Control
+                    type="tel"
+                    className="input"
+                    value={phNo}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Ex: 123-456-7891"
+                    required
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  />
+                </Form.Label>
               </Form.Group>
               <p></p>
               <Button variant="primary mb-3" type="submit">
@@ -326,31 +324,43 @@ function App() {
         )}
         {showpage && (
           <div>
-            <FormTodo addTodo={addTodo} />
-            <div>
-              <div id="mozdiv1">
-                &emsp;Task
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                Where
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                Date &emsp;&emsp;&emsp; Time
+            <div className="welcome">
+              <h2>Welcome {userName}!</h2>
+            </div>
+            <div className="grid-container">
+              <div className="grid-child 2">
+                <FormTodo addTodo={addTodo} />
               </div>
+              <div className="grid-child 1">
+                <div className="todo-list">
+                  <h3>Todo:</h3>
+                  <br></br>
+                  &emsp;Task
+                  &emsp;&emsp;&emsp;
+                  Where
+                  &emsp;&emsp;&emsp;&emsp;&emsp;
+                  Date &emsp;&emsp;&emsp; Time
 
-              {todos.map((todo, index) => (
-                <Card>
-                  <Card.Body>
-                    <Todo
-                      key={index}
-                      index={index}
-                      todo={todo}
-                      markTodo={markTodo}
-                      removeTodo={removeTodo}
-                    />
-                  </Card.Body>
-                </Card>
-              ))}
+                  {todos.map((todo, index) => (
+                    <Card>
+                      <Card.Body>
+                        <Todo
+                          key={index}
+                          index={index}
+                          todo={todo}
+                          markTodo={markTodo}
+                          removeTodo={removeTodo}
+                        />
+                      </Card.Body>
+                    </Card>
+                  ))}
+                </div>
+                <div>
+                </div>
+              </div>
             </div>
           </div>
+
         )}
       </div>
     </div>
