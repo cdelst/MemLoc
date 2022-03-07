@@ -57,7 +57,7 @@ function GetDistanceBetweenCoordinates(todoLocation) {
     3963 *
     Math.acos(
       Math.sin(lat1) * Math.sin(lat2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
+        Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
     );
 
   console.log("The distance in miles" + distanceInMiles);
@@ -98,7 +98,7 @@ function FormTodo({ addTodo }) {
   const myArray = currLocation;
 
   const options = myArray.map((item) => {
-    if (item !== ",-1,-1" && item !== ",") {
+    if (item != ",-1,-1" && item != ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
           {item[0]}
@@ -153,7 +153,6 @@ function FormTodo({ addTodo }) {
         <Form.Control
           as="select"
           value={location_value}
-          
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -232,13 +231,12 @@ function App() {
   };
 
   const removeTodo = (index) => {
-    
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    if (newTodos.length == 0){
+    if (newTodos.length == 0) {
       setListEmpty(true);
-    } 
+    }
   };
 
   const checkDateandTime = () => {
@@ -257,7 +255,6 @@ function App() {
       hour12: false,
     });
     for (let i = 0; i < todos.length; i++) {
-      
       if (todos[i].date_text !== "") {
         if (
           todos[i].date_text === today &&
@@ -276,23 +273,21 @@ function App() {
     }
   };
   setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
-  
+
   // Initial page set up
   const [phNo, setPhone] = React.useState("");
   const [userName, setUserName] = React.useState("");
   const [showpage, setShowpage] = React.useState(false);
-  const [listEmpty, setListEmpty] =  React.useState(true);
+  const [listEmpty, setListEmpty] = React.useState(true);
 
   const login = (e) => {
     e.preventDefault();
     setShowpage(true);
-  }
+  };
 
   return (
     <div className="app">
-
       <div className="container">
-
         <h1 className="text-center mb-4">MemLoc</h1>
         {!showpage && (
           <div className="login">
@@ -323,7 +318,7 @@ function App() {
                 </Form.Label>
               </Form.Group>
               <p></p>
-              <Button variant="primary mb-3" type="submit" >
+              <Button variant="primary mb-3" type="submit">
                 Lets get started
               </Button>
             </Form>
@@ -344,19 +339,13 @@ function App() {
                   <br></br>
                   {!listEmpty && (
                     <div>
-                  &emsp;Task
-                  &emsp;&emsp;&emsp;
-                  Where
-                  &emsp;&emsp;&emsp;&emsp;&emsp;
-                  Date &emsp;&emsp;&emsp; Time
-                  </div>
+                      &emsp;Task &emsp;&emsp;&emsp; Where
+                      &emsp;&emsp;&emsp;&emsp;&emsp; Date &emsp;&emsp;&emsp;
+                      Time
+                    </div>
                   )}
-                  {listEmpty && (
-                    <div>
-                  Nothing to do!
-                  </div>
-                  )}
-                  
+                  {listEmpty && <div>Nothing to do!</div>}
+
                   {todos.map((todo, index) => (
                     <Card>
                       <Card.Body>
@@ -371,18 +360,15 @@ function App() {
                     </Card>
                   ))}
                 </div>
-                <div>
-                </div>
+                <div />
               </div>
             </div>
           </div>
-
         )}
       </div>
     </div>
   );
 }
-
 
 async function callingwebsite(addressSoFar) {
   //var adressable = "";
@@ -406,8 +392,8 @@ async function callingwebsite(addressSoFar) {
 
   await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
-    adressable +
-    "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+      adressable +
+      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
   ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
