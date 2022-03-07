@@ -193,13 +193,13 @@ function FormTodo({ addTodo }) {
 
 function App() {
   const [todos, setTodos] = React.useState([
-    {
-      text: "Pick up dog",
-      location_text: "Groomer",
-      date_text: "1-1-11",
-      time_text: "1:00",
-      isDone: false,
-    },
+    // {
+    //   text: "Pick up dog",
+    //   location_text: "Groomer",
+    //   date_text: "1-1-11",
+    //   time_text: "1:00",
+    //   isDone: false,
+    // },
   ]);
 
   const [backendLocation, setBackendLocation] = React.useState(undefined);
@@ -214,6 +214,7 @@ function App() {
   }, []);
 
   const addTodo = (text, location_text, date_text, time_text, coordinates) => {
+    setListEmpty(false);
     const newTodos = [
       ...todos,
       { text, location_text, date_text, time_text, coordinates },
@@ -231,9 +232,13 @@ function App() {
   };
 
   const removeTodo = (index) => {
+    
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
+    if (newTodos.length == 0){
+      setListEmpty(true);
+    } 
   };
 
   const checkDateandTime = () => {
@@ -252,6 +257,7 @@ function App() {
       hour12: false,
     });
     for (let i = 0; i < todos.length; i++) {
+      
       if (todos[i].date_text !== "") {
         if (
           todos[i].date_text === today &&
@@ -270,11 +276,12 @@ function App() {
     }
   };
   setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
-
+  
   // Initial page set up
   const [phNo, setPhone] = React.useState("");
   const [userName, setUserName] = React.useState("");
   const [showpage, setShowpage] = React.useState(false);
+  const [listEmpty, setListEmpty] =  React.useState(true);
 
   const login = (e) => {
     e.preventDefault();
@@ -316,7 +323,7 @@ function App() {
                 </Form.Label>
               </Form.Group>
               <p></p>
-              <Button variant="primary mb-3" type="submit">
+              <Button variant="primary mb-3" type="submit" >
                 Lets get started
               </Button>
             </Form>
@@ -335,12 +342,21 @@ function App() {
                 <div className="todo-list">
                   <h3>Todo:</h3>
                   <br></br>
+                  {!listEmpty && (
+                    <div>
                   &emsp;Task
                   &emsp;&emsp;&emsp;
                   Where
                   &emsp;&emsp;&emsp;&emsp;&emsp;
                   Date &emsp;&emsp;&emsp; Time
-
+                  </div>
+                  )}
+                  {listEmpty && (
+                    <div>
+                  Nothing to do!
+                  </div>
+                  )}
+                  
                   {todos.map((todo, index) => (
                     <Card>
                       <Card.Body>
