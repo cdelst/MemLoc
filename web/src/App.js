@@ -156,7 +156,7 @@ function FormTodo({ addTodo }) {
         <Form.Control
           as="select"
           value={location_value}
-          colorproperty="red"
+          
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -308,30 +308,30 @@ function App() {
         )}
         {showpage && (
           <div>
-          <div id="mozdiv1">
-          &emsp;Task
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
- Where
- &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
- Date &emsp;&emsp;&emsp; Time
- </div>
-         
-            {todos.map((todo, index) => (
-            
-              <Card>
-                <Card.Body>
-                  <Todo
-                    key={index}
-                    index={index}
-                    todo={todo}
-                    markTodo={markTodo}
-                    removeTodo={removeTodo}
-                  />
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
+            <FormTodo addTodo={addTodo} />
+            <div>
+              <div id="mozdiv1">
+                &emsp;Task
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                Where
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                Date &emsp;&emsp;&emsp; Time
+              </div>
 
+              {todos.map((todo, index) => (
+                <Card>
+                  <Card.Body>
+                    <Todo
+                      key={index}
+                      index={index}
+                      todo={todo}
+                      markTodo={markTodo}
+                      removeTodo={removeTodo}
+                    />
+                  </Card.Body>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
       </div>
@@ -339,11 +339,7 @@ function App() {
   );
 }
 
-// &emsp;Task
-// &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-// Where
-// &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-// Date &emsp;&emsp;&emsp; Time
+
 async function callingwebsite(addressSoFar) {
   //var adressable = "";
   if (addressSoFar != undefined) {
@@ -368,7 +364,7 @@ async function callingwebsite(addressSoFar) {
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
       adressable +
       "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
-  ) 
+  ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
     .then((json) => {
