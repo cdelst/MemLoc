@@ -180,11 +180,7 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button
-        variant="primary mb-3"
-        type="dummy"
-        onClick={sendNotificationToUser}
-      >
+      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser({location: "todoLocation", task: "todoItem"})}>
         Dummy Button
       </Button>
     </Form>
