@@ -57,20 +57,21 @@ function GetDistanceBetweenCoordinates(todoLocation) {
     3963 *
     Math.acos(
       Math.sin(lat1) * Math.sin(lat2) +
-        Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
+      Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
     );
 
   console.log("The distance in miles" + distanceInMiles);
   return distanceInMiles;
 }
 
-function Popup({ todoLocation, todoItem }) {
+function notificationForLocation({ todoLocation, todoItem }) {
   if (GetDistanceBetweenCoordinates(todoLocation) < 10) {
     const obj = { location: todoLocation, task: todoItem };
     sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
 }
+
 function sendNotificationToUser(obj) {
   fetch("/sendText", {
     // Enter your IP address here
@@ -263,11 +264,15 @@ function App() {
         ) {
           // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
+          var obj = { location: todos[i].coordinates, task: todos[i] };
+          sendNotificationToUser(obj);
         } else if (
           todos[i].date_text === today &&
           todos[i].time_text === curr_time
         ) {
           alert("time to do: " + todos[i].text);
+          var obj = { location: todos[i].coordinates, task: todos[i] };
+          sendNotificationToUser(obj);
         }
       }
     }
@@ -392,8 +397,8 @@ async function callingwebsite(addressSoFar) {
 
   await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
-      adressable +
-      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+    adressable +
+    "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
   ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
