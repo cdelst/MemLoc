@@ -124,7 +124,7 @@ function sendTextMessages(postMessage) {
   console.log("in sendTextMessages" + postMessage.location + " " + postMessage.task);
 client.messages
   .create({
-     body: postMessage.location + postMessage.task,
+     body: postMessage.location + " " +  postMessage.task,
      from: '+19108078143',
      to: '+19168057009'
    })
