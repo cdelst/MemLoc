@@ -331,10 +331,10 @@ function App() {
               <h2>Welcome {userName}!</h2>
             </div>
             <div className="grid-container">
-              <div className="grid-child 2">
+              <div className="grid-child" key="2">
                 <FormTodo addTodo={addTodo} />
               </div>
-              <div className="grid-child 1">
+              <div className="grid-child" key="1">
                 <div className="todo-list">
                   <h3>Todo:</h3>
                   <br></br>
