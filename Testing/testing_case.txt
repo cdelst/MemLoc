@@ -1,5 +1,3 @@
-
-
 Testing Completed:
 
 1. Backend location ingestion api funtionality
@@ -16,4 +14,3 @@ Testing Completed:
     1. Correctly formed location data that HAS been sent can be parsed and stored
         a. Correctly stored data can be retrieved afterwards
     2. No data has been sent to backend yet, so calling the endpoint returns "not found" with a 404
-    
