@@ -1,3 +1,11 @@
-Each team member
-picks a module or module and lists the equivalence classes and the test cases selected to
-cover all equivalence classes.
+Frontend testing - web/src/App.test.js
+Run npm test within web folder
+
+A. Ensure todo list tasks are updated properly (cont'd from testing_alex.txt)
+    3. A task that is added shows up on the screen 
+
+B. Make sure App loads and login works
+    1. React app renders 
+        - tests to ensure there are no issues in creating the page
+    2. Login button takes you to home page
+        - checks that once login button is clicked, the login form is no longer on the page

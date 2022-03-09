@@ -1,3 +1,7 @@
-Each team member
-picks a module or module and lists the equivalence classes and the test cases selected to
-cover all equivalence classes.
+Frontend testing - web/src/App.test.js
+Run npm test within web folder
+
+A. Ensure todo list tasks are updated properly 
+    1. Adding a task to an empty list 
+        - initial page is set to have "Nothing to do!", this tests that once the first task is added the placeholder "Nothing to do!" is no longer there
+    2.  Be able to delete a task once its added 
