@@ -1,3 +1,32 @@
 Each team member
 picks a module or module and lists the equivalence classes and the test cases selected to
 cover all equivalence classes.
+
+Module: Location endpoint
+
+Equivalence Class: Incorrect format data sent to put location endpoint.
+
+Testing:
+* Created a function to convert a json object to xml
+* Use this new attribute type instead of json to make sure that our functions handle it properly
+* Recieved a 400 Bad Request due to the malformed request with incorrect data
+
+Module: Sending text messages
+
+Equivalence Class: Correctly formatted data is sent to our send text endpoint.
+
+Testing:
+* Created Json object that replicates the expected data from the Overland app
+* Call post request for sending text message
+* Insert json as the body which is a correctly formatted json object
+* Recieve a 201 for succesful creation and sending of message
+
+Equivalence Class: Incorrectly formatted data is sent to our send text endpoint.
+
+Testing:
+* Create json object 
+* Create function to convert json object to xml
+* Use this function to create a new attriubte type 
+* Call send text post request with xml object as body
+* Will return 400 Bad Request due to it not being a json object
+
