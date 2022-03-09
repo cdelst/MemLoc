@@ -1,4 +1,3 @@
-
 import { render, screen, waitFor, fireEvent, getByTestId, getAllByTestId} from '@testing-library/react';
 import App from './App.js';
 import ReactDOM from "react-dom";
@@ -24,7 +23,7 @@ test("login becomes todo list", async () => {
   await expect(button).not.toBeInTheDocument();
 });
 
-test("input task is displayed", () => {
+test("one task is displayed", () => {
 
   const { getByLabelText, getByText, getByPlaceholderText} = render(<App />);
   const phNoValue = "129-098-0864";
@@ -36,12 +35,11 @@ test("input task is displayed", () => {
   fireEvent.change(getByLabelText(/phone/i), { target: { value: phNoValue } });
   fireEvent.click(button);
 
-  const gr9 = screen.getByPlaceholderText("Add new todo task");
-  fireEvent.change(gr9, {target: {value: "Finish Lab Report"}});
+  const todo = screen.getByPlaceholderText("Add new todo task");
+  fireEvent.change(todo, {target: {value: "Finish Lab Report"}});
 
   expect(screen.getByDisplayValue("Finish Lab Report")).toBeInTheDocument();
 });
-
 
 test("submit first task", async () => {
   const { getByText} = render(<App />);
@@ -52,7 +50,7 @@ test("submit first task", async () => {
   const emptyTodo = getByText(/Nothing to do!/i);
   const button3 = getByText(/Submit/i);
   fireEvent.click(button3);
-  
+
   await expect(emptyTodo).not.toBeInTheDocument();
  });
 
