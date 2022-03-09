@@ -297,6 +297,7 @@ function App() {
                 <Form.Label>
                   <b>Name: </b>
                   <Form.Control
+                    label = "name"
                     type="text"
                     className="input"
                     value={userName}
@@ -308,6 +309,7 @@ function App() {
                 <Form.Label>
                   <b>Phone Number </b>(Format: xxx-xxx-xxxx):
                   <Form.Control
+                    label ="phone"
                     type="tel"
                     className="input"
                     value={phNo}
@@ -319,7 +321,7 @@ function App() {
                 </Form.Label>
               </Form.Group>
               <p></p>
-              <Button variant="primary mb-3" type="submit">
+              <Button id="loginButton" variant="primary mb-3" type="submit" >
                 Lets get started
               </Button>
             </Form>
