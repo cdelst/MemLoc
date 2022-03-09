@@ -109,3 +109,22 @@ function makeXmlFromOb(ob, parent) {
   return parent;
 }
 
+describe("Twilio", () => {
+  const obj = { location: "Santa Cruz, CA", task: "Get groceries" };
+  it("Send Text should send notification to phone", async () => {
+    const res = await requestWithSupertest.post("/sendText", {
+      body: obj,
+    });
+    expect(res.body).toEqual(obj);
+    //also should get text to phone
+  });
+
+  const empty = {};
+  it("Send Text with empty body should not do anything", async () => {
+    const res = await requestWithSupertest.post("/sendText", {
+      body: empty,
+    });
+    expect(res.body).toEqual(empty);
+  });
+
+});

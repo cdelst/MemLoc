@@ -1,3 +1,15 @@
-Each team member
-picks a module or module and lists the equivalence classes and the test cases selected to
-cover all equivalence classes.
+Testing Completed:
+
+These tests live in backend/tests/test.js
+
+1. Backend Twilio Integration
+
+    Equivalence classes:
+
+    1. Notification is being sent to user
+    2. Empty notification is trying to be sent to user
+
+    Test Cases:
+
+    1. Correctly formed location and to do task data is sent to the user
+    2. Since no body is sent to the POST endpoint, it returns a "no body" and does not send the user anything
