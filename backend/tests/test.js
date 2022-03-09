@@ -53,4 +53,59 @@ describe("Location Endpoint", () => {
     const arr = [-122.030581, 37.3318];
     expect(res.body).toEqual(arr);
   });
+
+  it("Should result in error when you send a non json object when putting location", async () => {
+    var randomXml = makeXmlFromOb(dummyLocationExample, XmlService.createElement('root'));
+    const res = await requestWithSupertest.post("/put-location", {
+      body: randomXml
+    })
+    expect(res.status).toEqual(400);
+  });
 });
+
+describe("Testing text messages", () => {
+  it("Text message should return 201 when text is sent", async () => {
+    const res = await requestWithSupertest.post("/sendText", {
+      body: dummyLocationExample
+    });
+    expect(res.status).toEqual(201);
+  });
+  it("Should result in error when you send a non json object when sending a text", async () => {
+    var randomXml = makeXmlFromOb(dummyLocationExample, XmlService.createElement('root'));
+    const res = await requestWithSupertest.post("/sendText", {
+      body: randomXml
+    })
+    expect(res.status).toEqual(400);
+  });
+
+
+});
+
+
+function makeXmlFromOb(ob, parent) {
+  // this is recursive to deal with multi level JSON objects
+  Object.keys(ob).forEach(function (d) {
+
+    // if the key is numeric, xml will fail, so rename array indices to value
+    var child = XmlService.createElement(isNaN(new Number(d)) ? d : 'element');
+
+    // add new created element to the parent
+    parent.addContent(child);
+
+    // need to recurse if this is an object/array
+    if (typeof ob[d] === 'object') {
+
+      // the new parent is the newly created node
+      return makeXmlFromOb(ob[d], child);
+    }
+    else {
+
+      // regular node, set the text to the value
+      child.setText(ob[d]);
+    }
+
+  });
+
+  return parent;
+}
+

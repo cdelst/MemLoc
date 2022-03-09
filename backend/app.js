@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
 
 app.post("/sendText", (req, res) => {
   if (req.header("Content-Type") !== "application/json") {
-    res.send("Bad request");
+    res.status(400).send("Bad request");
     return;
   }
 
@@ -55,7 +55,7 @@ app.post("/sendText", (req, res) => {
 
 app.post("/put-location", (req, res) => {
   if (req.header("Content-Type") !== "application/json") {
-    res.send("Bad request");
+    res.status(400).send("Bad request");
     return;
   }
 
