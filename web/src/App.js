@@ -25,7 +25,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
   return (
     <div
       className="todo"
-      style={{ backgroundColor: displayLocationDue ? "black" : "" }}
+      style={{ backgroundColor: todo.isDone ? "lightGreen" : "" }}
     >
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>
         {todo.text}
@@ -46,7 +46,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
 }
 
 function GetDistanceBetweenCoordinates(todoLocation) {
-  currLocation = [36.9741, -122.0308]; // Santa cruz
+  currLocation = [-122.0308, 36.9741]; // Santa cruz
 
   const lat1 = (currLocation[0] * Math.PI) / 180.0;
   const lat2 = (todoLocation[0] * Math.PI) / 180.0;
@@ -180,16 +180,6 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button
-        variant="primary mb-3"
-        type="dummy"
-        onClick={sendNotificationToUser({
-          location: "todoLocation",
-          task: "todoItem",
-        })}
-      >
-        Dummy Button
-      </Button>
     </Form>
   );
 }
@@ -230,7 +220,7 @@ function App() {
 
   const markTodo = (index) => {
     const newTodos = [...todos];
-    newTodos[index].isDone = true;
+    newTodos[index].isDone = !newTodos[index].isDone;
     setTodos(newTodos);
   };
 
@@ -259,28 +249,45 @@ function App() {
       hour12: false,
     });
     for (let i = 0; i < todos.length; i++) {
-      if (todos[i].date_text !== "") {
+      if (todos[i].date_text !== "" || todos[i].location_text !== "") {
         if (
           todos[i].date_text === today &&
           todos[i].time_text === "" &&
-          curr_time === "9:00"
+          curr_time === "9:00" &&
+          !todos[i].isDone
         ) {
           // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
           var obj = { location: todos[i].coordinates, task: todos[i] };
+          todos[i].isDone = true;
           sendNotificationToUser(obj);
         } else if (
           todos[i].date_text === today &&
-          todos[i].time_text === curr_time
+          todos[i].time_text === curr_time &&
+          !todos[i].isDone
         ) {
           alert("time to do: " + todos[i].text);
+          todos[i].isDone = true;
+          var obj = { location: todos[i].coordinates, task: todos[i] };
+          sendNotificationToUser(obj);
+        } else if (
+          GetDistanceBetweenCoordinates(todos[i].coordinates) < 5 &&
+          !todos[i].isDone
+        ) {
+          alert(
+            "triggered by location: task" +
+              todos[i].text +
+              " with location: " +
+              todos[i].location_text
+          );
+          todos[i].isDone = true;
           var obj = { location: todos[i].coordinates, task: todos[i] };
           sendNotificationToUser(obj);
         }
       }
     }
   };
-  setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
+  setInterval(checkDateandTime, 5 * 1000); // checkDateandTime is called every minute
 
   // Initial page set up
   const [phNo, setPhone] = React.useState("");

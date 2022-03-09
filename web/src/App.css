@@ -1,5 +1,10 @@
+html {
+  background-color: rgb(225, 241, 248);
+}
+
 .App {
   text-align: center;
+  background-color: rgb(225, 241, 248);
 }
 .app {
   font-family:American Typewriter, serif;
