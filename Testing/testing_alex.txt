@@ -1,0 +1,3 @@
+Each team member
+picks a module or module and lists the equivalence classes and the test cases selected to
+cover all equivalence classes.

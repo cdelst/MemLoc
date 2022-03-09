@@ -64,13 +64,14 @@ function GetDistanceBetweenCoordinates(todoLocation) {
   return distanceInMiles;
 }
 
-function Popup({ todoLocation, todoItem }) {
+function notificationForLocation({ todoLocation, todoItem }) {
   if (GetDistanceBetweenCoordinates(todoLocation) < 10) {
     const obj = { location: todoLocation, task: todoItem };
     sendNotificationToUser(obj);
     alert("Current location is same as location in to do list");
   }
 }
+
 function sendNotificationToUser(obj) {
   fetch("/sendText", {
     // Enter your IP address here
@@ -98,7 +99,7 @@ function FormTodo({ addTodo }) {
   const myArray = currLocation;
 
   const options = myArray.map((item) => {
-    if (item !== ",-1,-1" && item !== ",") {
+    if (item != ",-1,-1" && item != ",") {
       return (
         <option key={item} value={[item[0], item[1]]}>
           {item[0]}
@@ -153,7 +154,6 @@ function FormTodo({ addTodo }) {
         <Form.Control
           as="select"
           value={location_value}
-          
           onChange={(e) => setLocation(e.target.value)}
         >
           {options}
@@ -180,11 +180,7 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button
-        variant="primary mb-3"
-        type="dummy"
-        onClick={sendNotificationToUser}
-      >
+      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser({location: "todoLocation", task: "todoItem"})}>
         Dummy Button
       </Button>
     </Form>
@@ -232,13 +228,12 @@ function App() {
   };
 
   const removeTodo = (index) => {
-    
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    if (newTodos.length == 0){
+    if (newTodos.length == 0) {
       setListEmpty(true);
-    } 
+    }
   };
 
   const checkDateandTime = () => {
@@ -257,7 +252,6 @@ function App() {
       hour12: false,
     });
     for (let i = 0; i < todos.length; i++) {
-      
       if (todos[i].date_text !== "") {
         if (
           todos[i].date_text === today &&
@@ -266,33 +260,35 @@ function App() {
         ) {
           // default notif at 9 AM if time not specified
           alert(todos[i].text + " is due today!");
+          var obj = { location: todos[i].coordinates, task: todos[i] };
+          sendNotificationToUser(obj);
         } else if (
           todos[i].date_text === today &&
           todos[i].time_text === curr_time
         ) {
           alert("time to do: " + todos[i].text);
+          var obj = { location: todos[i].coordinates, task: todos[i] };
+          sendNotificationToUser(obj);
         }
       }
     }
   };
   setInterval(checkDateandTime, 60 * 1000); // checkDateandTime is called every minute
-  
+
   // Initial page set up
   const [phNo, setPhone] = React.useState("");
   const [userName, setUserName] = React.useState("");
   const [showpage, setShowpage] = React.useState(false);
-  const [listEmpty, setListEmpty] =  React.useState(true);
+  const [listEmpty, setListEmpty] = React.useState(true);
 
   const login = (e) => {
     e.preventDefault();
     setShowpage(true);
-  }
+  };
 
   return (
     <div className="app">
-
       <div className="container">
-
         <h1 className="text-center mb-4">MemLoc</h1>
         {!showpage && (
           <div className="login">
@@ -301,6 +297,7 @@ function App() {
                 <Form.Label>
                   <b>Name: </b>
                   <Form.Control
+                    label = "name"
                     type="text"
                     className="input"
                     value={userName}
@@ -312,6 +309,7 @@ function App() {
                 <Form.Label>
                   <b>Phone Number </b>(Format: xxx-xxx-xxxx):
                   <Form.Control
+                    label ="phone"
                     type="tel"
                     className="input"
                     value={phNo}
@@ -323,7 +321,7 @@ function App() {
                 </Form.Label>
               </Form.Group>
               <p></p>
-              <Button variant="primary mb-3" type="submit"id="allisfairinloveandwar" >
+              <Button id="loginButton" variant="primary mb-3" type="submit" >
                 Lets get started
               </Button>
             </Form>
@@ -335,28 +333,22 @@ function App() {
               <h2>Welcome {userName}!</h2>
             </div>
             <div className="grid-container">
-              <div className="grid-child 2">
+              <div className="grid-child" key="2">
                 <FormTodo addTodo={addTodo} />
               </div>
-              <div className="grid-child 1">
+              <div className="grid-child" key="1">
                 <div className="todo-list">
                   <h3>Todo:</h3>
                   <br></br>
                   {!listEmpty && (
                     <div>
-                  &emsp;Task
-                  &emsp;&emsp;&emsp;
-                  Where
-                  &emsp;&emsp;&emsp;&emsp;&emsp;
-                  Date &emsp;&emsp;&emsp; Time
-                  </div>
+                      &emsp;Task &emsp;&emsp;&emsp; Where
+                      &emsp;&emsp;&emsp;&emsp;&emsp; Date &emsp;&emsp;&emsp;
+                      Time
+                    </div>
                   )}
-                  {listEmpty && (
-                    <div>
-                  Nothing to do!
-                  </div>
-                  )}
-                  
+                  {listEmpty && <div>Nothing to do!</div>}
+
                   {todos.map((todo, index) => (
                     <Card>
                       <Card.Body>
@@ -371,18 +363,15 @@ function App() {
                     </Card>
                   ))}
                 </div>
-                <div>
-                </div>
+                <div />
               </div>
             </div>
           </div>
-
         )}
       </div>
     </div>
   );
 }
-
 
 async function callingwebsite(addressSoFar) {
   //var adressable = "";

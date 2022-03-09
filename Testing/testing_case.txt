@@ -1,0 +1,19 @@
+
+
+Testing Completed:
+
+1. Backend location ingestion api funtionality
+
+    Equivilence classes:
+
+    1. Location has not been sent from the app yet
+    2. Location has been sent, but is malformed
+    3. Location has been sent, but did not save properly
+    4. Location has been sent, and did save properly
+
+    Test Cases:
+
+    1. Correctly formed location data that HAS been sent can be parsed and stored
+        a. Correctly stored data can be retrieved afterwards
+    2. No data has been sent to backend yet, so calling the endpoint returns "not found" with a 404
+    
