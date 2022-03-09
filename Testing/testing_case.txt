@@ -1,8 +1,10 @@
 Testing Completed:
 
-1. Backend location ingestion api funtionality
+These tests live in backend/tests/test.js
 
-    Equivilence classes:
+1. Backend location ingestion api functionality
+
+    Equivalence classes:
 
     1. Location has not been sent from the app yet
     2. Location has been sent, but is malformed

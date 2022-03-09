@@ -46,7 +46,7 @@ function Todo({ todo, index, markTodo, removeTodo }) {
 }
 
 function GetDistanceBetweenCoordinates(todoLocation) {
-  currLocation = [37.040998861397526, -122.07123581353396];
+  currLocation = [36.9741, -122.0308]; // Santa cruz
 
   const lat1 = (currLocation[0] * Math.PI) / 180.0;
   const lat2 = (todoLocation[0] * Math.PI) / 180.0;
@@ -57,7 +57,7 @@ function GetDistanceBetweenCoordinates(todoLocation) {
     3963 *
     Math.acos(
       Math.sin(lat1) * Math.sin(lat2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
+        Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)
     );
 
   console.log("The distance in miles" + distanceInMiles);
@@ -180,7 +180,14 @@ function FormTodo({ addTodo }) {
       <Button variant="primary mb-3" type="submit">
         Submit
       </Button>
-      <Button variant="primary mb-3" type="dummy" onClick={sendNotificationToUser({location: "todoLocation", task: "todoItem"})}>
+      <Button
+        variant="primary mb-3"
+        type="dummy"
+        onClick={sendNotificationToUser({
+          location: "todoLocation",
+          task: "todoItem",
+        })}
+      >
         Dummy Button
       </Button>
     </Form>
@@ -297,7 +304,7 @@ function App() {
                 <Form.Label>
                   <b>Name: </b>
                   <Form.Control
-                    label = "name"
+                    label="name"
                     type="text"
                     className="input"
                     value={userName}
@@ -309,7 +316,7 @@ function App() {
                 <Form.Label>
                   <b>Phone Number </b>(Format: xxx-xxx-xxxx):
                   <Form.Control
-                    label ="phone"
+                    label="phone"
                     type="tel"
                     className="input"
                     value={phNo}
@@ -321,7 +328,7 @@ function App() {
                 </Form.Label>
               </Form.Group>
               <p></p>
-              <Button id="loginButton" variant="primary mb-3" type="submit" >
+              <Button id="loginButton" variant="primary mb-3" type="submit">
                 Lets get started
               </Button>
             </Form>
@@ -395,8 +402,8 @@ async function callingwebsite(addressSoFar) {
 
   await fetch(
     "https://app.geocodeapi.io/api/v1/autocomplete?text=" +
-    adressable +
-    "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
+      adressable +
+      "&size=5&focus.point.lat=36.9741&focus.point.lon=-122.0308&apikey=acd95820-8868-11ec-a0d2-f33e4cc02cff"
   ) //focus.point.lon=36.9741&focus.point.lat=-122.0308
     .then((response) => response.json())
 
