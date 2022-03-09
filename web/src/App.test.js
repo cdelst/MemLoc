@@ -1,9 +1,6 @@
 import { render, screen, waitFor, fireEvent, getByTestId, getAllByTestId} from '@testing-library/react';
-import { Form } from 'react-bootstrap';
 import App from './App.js';
-import FormTodo from './App.js';
 import ReactDOM from "react-dom";
-// import { mount } from 'enzyme';
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
